@@ -27,7 +27,7 @@
 
 1. 输入**npm run build**。
 2. 输入**serve dist -p 80**。
-3. 第四步的80为端口，建议不要改。如果第四步无效，输入**npm install serve**。
+3. 第四步中80为端口，建议不要改。如果第四步无效，输入**npm install serve**。
 4. 至此，你应该可以打开http://localhost/了。
 
 ## develop
