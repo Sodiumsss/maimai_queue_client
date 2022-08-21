@@ -1,4 +1,23 @@
-# 客户端启动
+## 功能
+
+**玩家**
+
+- 登录、注册（不安全的）、登出
+
+- 排卡、取消排卡
+
+- 下机
+
+**管理员**（继承玩家）
+
+- 强制下机
+- 清空队列
+
+**超级管理员**（继承管理员）
+
+- 添加管理员、取消管理员
+
+## 客户端启动
 
 1. 打开cmd，输入**node**，如果有Welcome to Node.js vxx.xx.x。则进行下一步，如果没有[Node.js 安装配置 | 菜鸟教程 (runoob.com)](https://www.runoob.com/nodejs/nodejs-install-setup.html)。
 2. 进入到你解压文件所在的目录,使用cmd,输入**npm install**，若超时或有其它问题，请百度解决。
@@ -17,4 +36,3 @@
 2. 至此，你应该可以打开http://localhost/了。
 
 端口可以在**vue.config.js**中更改。
-
