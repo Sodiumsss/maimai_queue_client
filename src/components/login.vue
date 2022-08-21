@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     login(){
-      axios.post("http://"+global.ip+":6324/login",qs.stringify({"acc":this.ac,"pw":this.pw})).then(res =>{
+      axios.post("http://"+global.ip+":"+global.port+"/login",qs.stringify({"acc":this.ac,"pw":this.pw})).then(res =>{
 
         console.log(res);
         if (res.data===-1)

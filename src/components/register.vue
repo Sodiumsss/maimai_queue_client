@@ -39,7 +39,7 @@ methods:{
       return;
     }
 
-    axios.post("http://"+global.ip+":6324/register",qs.stringify({"acc":this.ac,"pw":this.pw})).then(res =>{
+    axios.post("http://"+global.ip+":"+global.port+"/register",qs.stringify({"acc":this.ac,"pw":this.pw})).then(res =>{
 
       console.log(res);
 

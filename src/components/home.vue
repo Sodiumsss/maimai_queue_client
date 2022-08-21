@@ -90,6 +90,7 @@ import qs from "qs";
 import global from "@/components/global";
 
 let ws =null;
+const server_url="http://"+global.ip+":"+global.port;
 export default {
   name: "home",
   data()
@@ -177,7 +178,7 @@ export default {
       if (this.check_socket())
       {
         ElMessageBox.prompt("请输入要升级为OP的用户名","提示",).then(({value})=>{
-          axios.post("http://"+global.ip+":6324/op_add",qs.stringify({"name":value})).then(res =>{
+          axios.post(server_url+"/op_add",qs.stringify({"name":value})).then(res =>{
             if (res.data!==-1)
             {
               ElMessage.success("已添加OP");
@@ -199,7 +200,7 @@ export default {
       if (this.check_socket())
       {
         ElMessageBox.prompt("请输入要降级为玩家的用户名","提示",).then(({value})=>{
-          axios.post("http://"+global.ip+":6324/op_delete",qs.stringify({"name":value})).then(res =>{
+          axios.post(server_url+"/op_delete",qs.stringify({"name":value})).then(res =>{
             // console.log(res);
             if (res.data!==-1)
             {
@@ -235,7 +236,7 @@ export default {
     CreateWebsocket(my)
     {
 
-      this.ws=new WebSocket("ws://"+global.ip+":6324/socket/"+this.acc);
+      this.ws=new WebSocket("ws://"+global.ip+":"+global.port+"/socket/"+this.acc);
       this.ws.onmessage=function (e)
       {
         let received=JSON.parse(e.data);
