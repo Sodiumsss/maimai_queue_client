@@ -7,13 +7,10 @@
 <!--        {{this.state}}-->
       </el-card>
     </el-header>
-    <el-main style="margin-top:2px;">
+    <el-main style="margin-top:1px;">
       <el-card style="text-align: center">
-    <span>欢迎，
-      <a v-if="kind==='1'">玩家</a>
-      <a v-if="kind==='2'">管理员</a>
-      <a v-if="kind==='3'">超级管理员</a>
-      {{acc}}</span>
+    <span>欢迎，<a v-if="kind==='1'">玩家</a><a v-if="kind==='2'">管理员</a><a v-if="kind==='3'">超级管理员</a>
+          {{acc}}</span>
         <el-button @click="exit_acc" style="float: right">登出</el-button>
         <el-divider/>
 
@@ -128,18 +125,12 @@ export default {
       this.$cookies.remove("kind");
       router.push("/login");
     }
-
     this.acc=this.$cookies.get("login");
     this.kind=this.$cookies.get("kind");
-
     this.CreateWebsocket(this);
-
     setInterval(()=>{
       this.state=this.ws.readyState;
     },500);
-
-
-
 
   },
   methods:{

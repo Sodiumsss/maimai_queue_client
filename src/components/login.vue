@@ -13,6 +13,14 @@
       <el-button @click="login" class="button">登录</el-button>
 
       <el-button @click="go_register" class="button">注册</el-button>
+      <el-divider></el-divider>
+      <p>Made by
+        <a href="https://space.bilibili.com/621726">Sodiums</a>
+
+      </p>
+      <p>Email:
+        <a href="javascript:void(0)" @click="email">sodiumsss@foxmail.com</a>
+      </p>
     </el-card>
 
 
@@ -52,6 +60,11 @@ export default {
         }
       })
     },
+    email()
+  {
+    navigator.clipboard.writeText('sodiumsss@foxmail.com');
+    ElMessage.success("已将邮箱复制至剪贴板");
+  },
     go_register(){
       router.push("/register")
     }
