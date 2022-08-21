@@ -34,7 +34,7 @@ methods:{
   register(){
     if (this.ac==="" || this.pw==="")
     {
-      ElMessage.error("请将账户/密码输入完整！");
+      ElMessage.error("请将账户/密码输入完整");
 
       return;
     }
@@ -45,11 +45,11 @@ methods:{
 
       if (res.data===-1)
       {
-        ElMessage.error("请尝试更换账户！");
+        ElMessage.error("请尝试更换账户");
       }
       else
       {
-        ElNotification.success("注册成功！");
+        ElNotification.success("注册成功");
         router.push("/login");
       }
     })
