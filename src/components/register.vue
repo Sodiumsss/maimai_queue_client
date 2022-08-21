@@ -53,8 +53,6 @@ methods:{
         router.push("/login");
       }
     })
-
-
   },
   back()
   {
