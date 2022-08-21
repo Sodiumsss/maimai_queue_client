@@ -17,6 +17,10 @@
 
 - 添加管理员、取消管理员
 
+## 使用发行版
+
+注意，发行版中ip:127.0.0.1，port:6324，这代表你需要将服务端与客户端在同一机器上运行。并且服务端port为6324。如果你下载了发行版（请解压dist文件夹），请参照**build**，从第**2**步开始。
+
 ## 客户端启动
 
 1. 打开cmd，输入**node**，如果有Welcome to Node.js vxx.xx.x。则进行下一步，如果没有[Node.js 安装配置 | 菜鸟教程 (runoob.com)](https://www.runoob.com/nodejs/nodejs-install-setup.html)。
@@ -27,7 +31,7 @@
 
 1. 输入**npm run build**。
 2. 输入**serve dist -p 80**。
-3. 第四步中80为端口，建议不要改。如果第四步无效，输入**npm install serve**。
+3. 第四步的80为端口，建议不要改。如果第四步无效，输入**npm install serve**。
 4. 至此，你应该可以打开http://localhost/了。
 
 ## develop
