@@ -304,7 +304,7 @@ export default {
             my.acc_index=-1;
             for (let i=0;i<my.queue.length;i++)
               {
-                if (my.queue[i]===my.$cookies.get("login"))
+                if (my.queue[i]===Base64.decode(my.$cookies.get("login")))
                 {
                   my.acc_index=i+1;
                   return;
