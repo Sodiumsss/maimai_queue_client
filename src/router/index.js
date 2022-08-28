@@ -4,6 +4,7 @@ import login from "@/components/login";
 import home from "@/components/home";
 import register from "@/components/register";
 
+
 const routes = [
   {
     path: '',
@@ -25,7 +26,15 @@ const routes = [
         name:'register',
         component:register,
       }
-    ]
+    ],
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: '404',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import(/* webpackChunkName: "about" */ '../views/404.vue')
   },
     // component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
 ]

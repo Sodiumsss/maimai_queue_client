@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const ip = "127.0.0.1";
+const ip = "10.103.9.162";
 const port="6324";
 export default {
   ip,

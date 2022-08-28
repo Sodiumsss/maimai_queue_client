@@ -2,17 +2,33 @@
 
   <el-container>
     <el-header>
-      <el-card style="text-align: center; margin: auto; width: 100%;">{{ this.info }}
-      <br>
-<!--        {{this.state}}-->
+      <el-card style="text-align: center;">
+
+        <el-row justify="end">
+
+          <el-col :span="8"></el-col>
+          <el-col :span="8">
+            <div>
+              欢迎，<a v-if="kind==='1'">玩家</a><a v-if="kind==='2'">管理员</a><a v-if="kind==='3'">超级管理员</a>
+              {{acc}}
+            </div>
+          </el-col>
+
+          <el-col :span="8">
+            <el-button @click="exit_acc" style="float: right">登出</el-button>
+          </el-col>
+
+        </el-row>
+
       </el-card>
     </el-header>
-    <el-main style="margin-top:1px;">
+
+
+
+    <el-main>
       <el-card style="text-align: center">
-    <span>欢迎，<a v-if="kind==='1'">玩家</a><a v-if="kind==='2'">管理员</a><a v-if="kind==='3'">超级管理员</a>
-          {{acc}}</span>
-        <el-button @click="exit_acc" style="float: right">登出</el-button>
-        <el-divider/>
+
+
 
         <el-row :gutter="20">
           <el-col :span="12">
@@ -63,6 +79,7 @@
       </el-card>
 
       <el-card style="margin-top: 10px;">
+
         <el-scrollbar max-height="400px">
           <div v-for="(item,index) in this.queue" :key="item" >
 
@@ -74,6 +91,10 @@
         </el-scrollbar>
       </el-card>
     </el-main>
+
+
+
+
   </el-container>
 
 </template>
@@ -87,6 +108,8 @@ import qs from "qs";
 import global from "@/components/global";
 
 let ws =null;
+const Base64 = require('js-base64').Base64
+
 const server_url="http://"+global.ip+":"+global.port;
 export default {
   name: "home",
@@ -111,6 +134,7 @@ export default {
       }
       if (n===1)
       {
+
         ElMessage.success({message:"与服务器连接成功",duration:1500});
         let data ={type:1}
         this.ws.send(JSON.stringify(data));
@@ -125,8 +149,9 @@ export default {
       this.$cookies.remove("kind");
       router.push("/login");
     }
-    this.acc=this.$cookies.get("login");
-    this.kind=this.$cookies.get("kind");
+    console.log(Base64.decode(this.$cookies.get("login")))
+    this.acc=Base64.decode(this.$cookies.get("login"));
+    this.kind=Base64.decode(this.$cookies.get("kind"));
     this.CreateWebsocket(this);
     setInterval(()=>{
       this.state=this.ws.readyState;
@@ -170,6 +195,8 @@ export default {
       {
         ElMessageBox.prompt("请输入要升级为OP的用户名","提示",).then(({value})=>{
           axios.post(server_url+"/op_add",qs.stringify({"name":value})).then(res =>{
+            console.log(res);
+
             if (res.data!==-1)
             {
               ElMessage.success("已添加OP");
@@ -192,7 +219,7 @@ export default {
       {
         ElMessageBox.prompt("请输入要降级为玩家的用户名","提示",).then(({value})=>{
           axios.post(server_url+"/op_delete",qs.stringify({"name":value})).then(res =>{
-            // console.log(res);
+            console.log(res);
             if (res.data!==-1)
             {
               ElMessage.success("已降级为玩家");
@@ -239,6 +266,14 @@ export default {
         {
           case 1://type(1)，data(公告)
             my.info=received.data;
+            ElNotification(
+                {
+                  title:"公告",
+                  message:received.data,
+                  type:'info',
+                  duration:0,
+                }
+            )
             const posted ={type:3,index:1};
             my.sendJSON(posted);
             break;
