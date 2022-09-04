@@ -22,9 +22,6 @@
 
       </el-card>
     </el-header>
-
-
-
     <el-main>
       <el-card style="text-align: center">
 
@@ -37,9 +34,7 @@
               <el-divider/>
               <div v-if="this.acc_index===-1">
                 <a>未排队</a>
-
               </div>
-
               <div v-if="this.acc_index!==-1">
                 <div v-if="this.acc_index>2">
                   <a>排队中</a>
@@ -54,6 +49,10 @@
 
 
               </div>
+              <el-divider/>
+              <el-button ><el-icon><Message /></el-icon>&nbsp;广域轰炸</el-button>
+              <el-button ><el-icon><MessageBox /></el-icon>&nbsp;收信箱</el-button>
+
 
             </el-card>
           </el-col>
@@ -83,7 +82,7 @@
         <el-scrollbar max-height="400px">
           <div v-for="(item,index) in this.queue" :key="item" >
 
-            <p v-if="item===this.acc" class="scrollbar-demo-item-self">{{index+1}}.{{ item }}</p>
+            <p v-if="item===this.acc" class="scrollbar-demo-item-self">{{index+1}}.{{ item }}(你)</p>
             <p v-if="index>1 && item!==this.acc" class="scrollbar-demo-item-waiting">{{index+1}}.{{ item }}</p>
             <p v-if="index<=1  && item!==this.acc" class="scrollbar-demo-item-playing">{{index+1}}.{{ item }}</p>
 
@@ -91,7 +90,6 @@
         </el-scrollbar>
       </el-card>
     </el-main>
-
 
 
 
@@ -163,27 +161,24 @@ export default {
 
 
 
-    if (!this.$cookies.isKey("name")
-        || !this.$cookies.isKey("kind")
-        || !this.$cookies.isKey("password"))
+    if (!(this.$cookies.isKey("name") && this.$cookies.isKey("kind") && this.$cookies.isKey("password")))
     {
-      ElNotification.error("您还没有登录");
+      ElNotification.error("你还没有登录");
       this.$cookies.remove("name");
       this.$cookies.remove("password");
       this.$cookies.remove("kind");
       router.push("/login");
     }
-
-
-    this.check_modify();
-
-    this.acc=Base64.decode(this.$cookies.get("name"));
-    this.kind=Base64.decode(this.$cookies.get("kind"));
-    this.CreateWebsocket(this);
-    setInterval(()=>{
-      this.state=this.ws.readyState;
-    },500);
-
+    else
+    {
+      this.check_modify();
+      this.acc=Base64.decode(this.$cookies.get("name"));
+      this.kind=Base64.decode(this.$cookies.get("kind"));
+      this.CreateWebsocket(this);
+      setInterval(()=>{
+        this.state=this.ws.readyState;
+      },500);
+    }
 
 
   },
