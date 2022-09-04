@@ -13,7 +13,7 @@
 
     <el-button @click="register" class="button">注册</el-button>
     <el-button @click="back" class="button">返回</el-button>
-    <p style="font-size: small;">你可以取一些奇怪的ID，包括中文......</p>
+    <p style="font-size: small;">你可以取一些奇怪的ID，但别太过分......</p>
   </el-card>
 </template>
 
