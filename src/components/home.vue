@@ -42,7 +42,7 @@
 
               <div v-if="this.acc_index!==-1">
                 <div v-if="this.acc_index>2">
-                  <a>已排队</a>
+                  <a>排队中</a>
                   <br>
                   <a>第{{this.acc_index}}名</a>
                 </div>
@@ -107,10 +107,10 @@ import axios from "axios";
 import qs from "qs";
 import global from "@/components/global";
 
-let ws =null;
 const Base64 = require('js-base64').Base64
-
 const server_url="http://"+global.ip+":"+global.port;
+
+
 export default {
   name: "home",
   data()
@@ -139,26 +139,74 @@ export default {
         let data ={type:1}
         this.ws.send(JSON.stringify(data));
       }
+    },
+    '$route'(to){
+      if (to.name==="404")
+      {
+        this.ws.close();
+      }
     }
-  },
+  }
+  ,
   mounted() {
-    if (!this.$cookies.isKey("login") || !this.$cookies.isKey("kind"))
+    switch (Math.floor(Math.random()*(3))+1)
+    {
+      case 1:
+        document.title="(￣▽￣)／";
+        break;
+      case 2:
+        document.title="(^_−)☆";
+        break;
+      case 3:
+        document.title="o(´^｀)o";
+    }
+
+
+
+    if (!this.$cookies.isKey("name")
+        || !this.$cookies.isKey("kind")
+        || !this.$cookies.isKey("password"))
     {
       ElNotification.error("您还没有登录");
-      this.$cookies.remove("login");
+      this.$cookies.remove("name");
+      this.$cookies.remove("password");
       this.$cookies.remove("kind");
       router.push("/login");
     }
-    console.log(Base64.decode(this.$cookies.get("login")))
-    this.acc=Base64.decode(this.$cookies.get("login"));
+
+
+    this.check_modify();
+
+    this.acc=Base64.decode(this.$cookies.get("name"));
     this.kind=Base64.decode(this.$cookies.get("kind"));
     this.CreateWebsocket(this);
     setInterval(()=>{
       this.state=this.ws.readyState;
     },500);
 
+
+
   },
   methods:{
+    check_modify()
+    {
+      axios.post("http://"+global.ip+":"+global.port+"/check",qs.stringify(
+          {"acc":Base64.decode(this.$cookies.get("name"))
+            ,"pw":Base64.decode(this.$cookies.get("password"))
+            ,"kind":Base64.decode(this.$cookies.get("kind"))})).then(res=>{
+        if (res.data===1)
+        {
+          console.log("验证成功");
+        }
+        else
+        {
+          console.log("验证失败");
+          ElMessage.error("你的Cookies出了一些问题，请重新登录");
+          this.exit_acc();
+        }
+      })
+    }
+    ,
     check_socket()
     {
       return this.ws.readyState === 1;
@@ -169,7 +217,7 @@ export default {
       {
         let posted = {type:2,index:1,name:this.acc};
         this.sendJSON(posted);
-        console.log("尝试加入队列");
+        //console.log("尝试加入队列");
       }else
       {
         ElMessage.error("操作失败，请尝试刷新页面/联系管理员");
@@ -182,7 +230,7 @@ export default {
       {
         let posted = {type:2,index:2,name:this.acc};
         this.sendJSON(posted);
-        console.log("尝试退出队列");
+        //console.log("尝试退出队列");
       }
       else {
         ElMessage.error("操作失败，请尝试刷新页面/联系管理员");
@@ -219,7 +267,7 @@ export default {
       {
         ElMessageBox.prompt("请输入要降级为玩家的用户名","提示",).then(({value})=>{
           axios.post(server_url+"/op_delete",qs.stringify({"name":value})).then(res =>{
-            console.log(res);
+            //console.log(res);
             if (res.data!==-1)
             {
               ElMessage.success("已降级为玩家");
@@ -234,9 +282,10 @@ export default {
     },
     exit_acc()
     {
-      this.$cookies.remove("login");
+      this.$cookies.remove("name");
       this.$cookies.remove("kind");
-      ElNotification.success("已登出");
+      this.$cookies.remove("password");
+
       this.ws.close();
       router.push("/login");
     },
@@ -281,17 +330,17 @@ export default {
             let status=received.status;
             if (status===false)
             {//type2操作失败
-              console.log("操作失败");
+              //console.log("操作失败");
             }
             else if (status===true)
             {//type2操作成功
-              console.log("操作成功，向服务器发送广播请求");
+              //console.log("操作成功，向服务器发送广播请求");
               const posted={type:3,index:2};
               my.sendJSON(posted);
             }
             break;
           case 3:
-            console.log("收到队列数据");
+            //console.log("收到队列数据");
             while(my.queue.length!==0)
             {
               my.queue.pop();
@@ -304,7 +353,7 @@ export default {
             my.acc_index=-1;
             for (let i=0;i<my.queue.length;i++)
               {
-                if (my.queue[i]===Base64.decode(my.$cookies.get("login")))
+                if (my.queue[i]===Base64.decode(my.$cookies.get("name")))
                 {
                   my.acc_index=i+1;
                   return;

@@ -60,8 +60,10 @@ export default {
         {
           this.login_state=false;
 
-          this.$cookies.set("login",Base64.encode(this.ac) ,-1 );
+          this.$cookies.set("name",Base64.encode(this.ac) ,-1);
+          this.$cookies.set("password",Base64.encode(this.pw),-1);
           this.$cookies.set("kind",Base64.encode(res.data),-1);
+
           router.push("/home");
         }
       })

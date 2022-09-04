@@ -9,9 +9,11 @@
     <el-input v-model="pw" style="margin-top:30px;">
       <template #prepend>密码</template>
     </el-input>
+
+
     <el-button @click="register" class="button">注册</el-button>
     <el-button @click="back" class="button">返回</el-button>
-
+    <p style="font-size: small;">你可以取一些奇怪的ID，包括中文......</p>
   </el-card>
 </template>
 

@@ -19,15 +19,16 @@ export default {
   },
   methods:{
     check(){
-      if (this.$cookies.isKey("login") && this.$cookies.isKey("kind"))
+      if (this.$cookies.isKey("name") && this.$cookies.isKey("kind") && this.$cookies.isKey("password"))
       {
-        router.push("/home")
+        router.push("/home");
       }
       else
       {
-        this.$cookies.remove("login");
-        this.$cookies.remove("kind")
-        router.push("/login")
+        this.$cookies.remove("name");
+        this.$cookies.remove("kind");
+        this.$cookies.remove("password");
+        router.push("/login");
       }
     },
 
