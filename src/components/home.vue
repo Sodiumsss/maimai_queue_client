@@ -15,7 +15,7 @@
           </el-col>
 
           <el-col :span="8">
-            <el-button @click="exit_acc" style="float: right">登出</el-button>
+            <el-button @click="exit_acc('xixi')" style="float: right">登出</el-button>
           </el-col>
 
         </el-row>
@@ -183,6 +183,13 @@ export default {
 
   },
   methods:{
+    strict_action()
+    {
+      if (global.strict)
+      {
+        this.check_modify();
+      }
+    },
     check_modify()
     {
       axios.post("http://"+global.ip+":"+global.port+"/check",qs.stringify(
@@ -208,6 +215,8 @@ export default {
     },
     pushQueue(){
 
+      this.strict_action();
+
       if (this.check_socket())
       {
         let posted = {type:2,index:1,name:this.acc};
@@ -221,6 +230,8 @@ export default {
 
     },
     exit_queue(){
+      this.strict_action();
+
       if (this.check_socket())
       {
         let posted = {type:2,index:2,name:this.acc};
@@ -234,6 +245,8 @@ export default {
     },
     op_add()
     {
+      this.strict_action();
+
       if (this.check_socket())
       {
         ElMessageBox.prompt("请输入要升级为OP的用户名","提示",).then(({value})=>{
@@ -242,11 +255,12 @@ export default {
 
             if (res.data!==-1)
             {
-              ElMessage.success("已添加OP");
+              ElMessage.success("已升级为OP");
+              //此处应通知被添加人刷新
             }
             else
             {
-              ElMessage.error("操作失败");
+              ElMessage.error("服务器操作失败");
             }
           });
         })
@@ -258,6 +272,8 @@ export default {
     },
     op_delete()
     {
+      this.strict_action();
+
       if (this.check_socket())
       {
         ElMessageBox.prompt("请输入要降级为玩家的用户名","提示",).then(({value})=>{
@@ -266,6 +282,7 @@ export default {
             if (res.data!==-1)
             {
               ElMessage.success("已降级为玩家");
+              //此处应通知被降级人刷新
             }
             else
             {
@@ -275,17 +292,23 @@ export default {
         })
       }else{ElMessage.error("操作失败");}
     },
-    exit_acc()
+    exit_acc(kind)
     {
+      if (kind!==undefined)
+      {
+        ElMessage.success("已登出")
+      }
+
       this.$cookies.remove("name");
       this.$cookies.remove("kind");
       this.$cookies.remove("password");
-
       this.ws.close();
       router.push("/login");
     },
     balanceQueue()
     {
+      this.strict_action();
+
       if (this.check_socket())
       {
         const posted={type:2,index:3};
@@ -362,6 +385,8 @@ export default {
 
     },
     clear(){
+      this.strict_action();
+
       if (this.check_socket())
       {
         const posted={type:2,index:4};
