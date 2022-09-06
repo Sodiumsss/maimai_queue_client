@@ -21,7 +21,7 @@
 
         <el-tooltip placement="right">
           <template #content>
-            我们使用Cookies来存储你的信息，<br/>请用排卡页面内"登出"来重新登录账号。
+            程序使用Cookies来存储你的信息，<br/>请用排卡页面内"登出"来重新登录账号。
           </template>
           <span class="button">
           <el-icon ><Warning /></el-icon>
@@ -75,21 +75,25 @@ export default {
   methods: {
     login(){
       this.login_state=true;
-      axios.post("http://"+global.ip+":"+global.port+"/login",qs.stringify({"acc":this.ac,"pw":this.pw})).then(res =>{
+      axios.post("http://"+global.ip+":"+global.port+"/login",qs.stringify({"acc":this.ac,"pw":this.pw}),{timeout:5000}).then(res =>{
         console.log(res);
+        this.login_state=false;
         if (res.data===-1)
         {
           ElMessage.error("请检查账户/密码是否输入正确");
-          this.login_state=false;
+
         }
         else
         {
-          this.login_state=false;
+
           this.$cookies.set("name",Base64.encode(this.ac) ,-1);
           this.$cookies.set("password",Base64.encode(this.pw),-1);
           this.$cookies.set("kind",Base64.encode(res.data),-1);
           router.push("/home");
         }
+      }).catch(err =>{
+        this.login_state=false;
+        ElMessage.error("与账号服务器连接超时")
       })
     },
     copy_email()
