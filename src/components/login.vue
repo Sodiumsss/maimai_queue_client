@@ -36,7 +36,7 @@
 
       <div v-show="show_info">
         <el-divider></el-divider>
-        <p>Made by
+        <p>Coder:
           <a href="https://space.bilibili.com/621726">{{ coder }}</a>
         </p>
         <p>Email:

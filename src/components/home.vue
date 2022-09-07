@@ -5,21 +5,25 @@
       <el-tabs @tab-click="changeMenu" v-model="active">
         <el-tab-pane label="排卡" name="排卡"/>
 
-          <el-tab-pane label="聊天" name="聊天"/>
+         <el-tab-pane label="聊天" name="聊天"/>
 
 
       </el-tabs>
+
       <!--排卡功能-->
       <div v-if="now_menu===1">
         <el-card style="text-align: center">
           <el-row :gutter="20">
             <el-col :span="12">
               <el-card>
-                欢迎，<a v-if="kind==='1'">玩家</a><a v-if="kind==='2'">管理员</a><a v-if="kind==='3'">超级管理员</a>
-                {{acc}}
-                <el-divider/>
+                你好，{{acc}}
+                <el-divider class="divider"/>
                 <div v-if="this.acc_index===-1">
-                  <a>未排队</a>
+
+                  <a v-if="card_queue.length>0">未排队</a>
+                  <a v-if="card_queue.length===0">无人排队</a>
+
+
                 </div>
                 <div v-if="this.acc_index!==-1">
                   <div v-if="this.acc_index>2">
@@ -30,9 +34,17 @@
                   <a v-if="this.acc_index<=2">上机中</a>
 
                 </div>
-                <el-divider/>
-                <el-button ><el-icon><Shop /></el-icon>&nbsp;积分商店</el-button>
-                <el-button @click="exitAcc('0')" >登出</el-button>
+                <el-divider class="divider"/>
+                <el-space direction="vertical">
+
+
+
+
+                  <el-button ><el-icon><Shop /></el-icon>商店</el-button>
+                  <el-button @click="exitAcc('0')" ><el-icon><CloseBold /></el-icon>登出</el-button>
+                </el-space>
+
+
 
 
               </el-card>
@@ -60,16 +72,13 @@
 
       <!--聊天-->
       <div v-if="now_menu===2">
-
-
         <el-card>
           <el-scrollbar height="300px" id="textBar" >
             <div style="margin-bottom: 10px;" v-for="item in this.text_queue">
-
-
                 <el-space style="margin-bottom: 5px;">
                   <el-avatar shape="circle" :size="'small'" :src='default_avatar'/>
-                  <a>{{item.name}}</a>
+                  <a v-if="item.name!==acc">{{item.name}}</a>
+                  <a v-if="item.name===acc">{{item.name}}(你)</a>
 
                   <div style="margin-left: 2px;">
                     <el-icon><Clock /></el-icon>
@@ -86,24 +95,13 @@
 
                   </el-col>
                 </el-row>
-
-
-
-
-
             </div>
-
-
           </el-scrollbar>
-
-          <el-divider/>
+          <el-divider class="divider"/>
           <el-input resize="none" type="textarea" :rows="3" v-model="send_text" placeholder="说点什么吧！"></el-input>
           <el-row style="margin-top: 7px;" justify="end">
 
             <el-button @click="clearText">清空</el-button>
-
-
-
             <el-button v-if="countDown===-1" @click="sendText(this.acc,this.send_text)">发送</el-button>
             <el-button v-if="countDown!==-1" disabled>请等待{{5-countDown}}秒</el-button>
 
@@ -114,7 +112,7 @@
       </div>
 
       <!--排卡板-->
-      <el-card style="margin-top: 10px;">
+      <el-card v-if="card_queue.length>0" style="margin-top: 10px;">
 
         <el-scrollbar max-height="400px">
           <div v-for="(item,index) in this.card_queue" :key="item" >
@@ -140,7 +138,6 @@ import axios from "axios";
 import qs from "qs";
 import global from "@/components/global";
 import {ref} from "vue";
-import {TabsPaneContext} from "element-plus";
 
 
 const Base64 = require('js-base64').Base64
@@ -480,6 +477,11 @@ export default {
       this.strictAction();
       if (this.checkSocket())
       {
+        if (text==="")
+        {
+          ElMessage.error("请不要发送空文本");
+          return;
+        }
         this.countDown=0;
         const date=new Date();
         const time=(date.getMonth()+1)+"/"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
@@ -515,6 +517,11 @@ export default {
 </script>
 
 <style scoped>
+.divider
+{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
 .scrollbar-demo-item-playing {
   display: flex;

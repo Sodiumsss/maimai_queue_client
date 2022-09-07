@@ -2,11 +2,12 @@
 
 **玩家**
 
-- 登录、注册（不安全的）、登出
+- 登录、注册（弱安全）、登出
 
 - 排卡、取消排卡
 
 - 下机
+- 聊天
 
 **管理员**（继承玩家）
 
@@ -17,29 +18,25 @@
 
 - 添加管理员、取消管理员
 
-## 使用发行版
+## 部署
+1. 随便你用什么方式拉到本地。
+2. 打开cmd，输入**node**，如果有Welcome to Node.js vxx.xx.x。则进行下一步，如果没有[Node.js 安装配置 | 菜鸟教程 (runoob.com)](https://www.runoob.com/nodejs/nodejs-install-setup.html)。
+3. 进入到你解压文件所在的目录,使用cmd,输入**npm install**，若超时或有其它问题，请百度解决。
+4. 修改src/components/global.vue中的ip、port，更改为服务端的ip以及设置在服务端application.properties中的server.port。
 
-注意，发行版中ip:127.0.0.1，port:6324，这代表你需要将服务端与客户端在同一机器上运行。并且服务端port为6324。如果你下载了发行版（请解压dist文件夹），请参照**build**，从第**2**步开始。
 
-## 客户端启动
-
-1. 打开cmd，输入**node**，如果有Welcome to Node.js vxx.xx.x。则进行下一步，如果没有[Node.js 安装配置 | 菜鸟教程 (runoob.com)](https://www.runoob.com/nodejs/nodejs-install-setup.html)。
-2. 进入到你解压文件所在的目录,使用cmd,输入**npm install**，若超时或有其它问题，请百度解决。
-3. 修改src/components/global.vue中的ip、port，更改为服务端的ip以及设置在服务端application.properties中的server.port。
-
-## build
-
-1. 输入**npm run build**。
+### build 方式
+1. 打开cmd,输入**npm run build**。
 2. 输入**serve dist -p 80**。
-3. 第四步的80为端口，建议不要改。如果第四步无效，输入**npm install serve**。
+3. 第四步的80为端口，建议不要改。如果第2步无效，输入**npm install serve**。
 4. 至此，你应该可以打开http://localhost/了。
 
-## develop
+### develop 方式
 
-1. 输入**npm run serve**
+1. 打开cmd,输入**npm run serve**
 2. 至此，你应该可以打开http://localhost/了。
+- 端口可以在**vue.config.js**中更改。
 
-端口可以在**vue.config.js**中更改。
 
 
 PS:有啥不懂的或者想吐槽的尽管说......
