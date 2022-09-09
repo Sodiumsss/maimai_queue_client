@@ -1,6 +1,7 @@
 <template>
+  <div @keyup.enter="login">
 
-    <el-card style="text-align: center">
+    <el-card  style="text-align: center">
       <a>用户登录</a>
 
       <el-divider/>
@@ -8,13 +9,13 @@
         <template #prepend>账号</template>
 
       </el-input>
-      <el-input v-model="pw" style="margin-top:30px;">
+      <el-input  v-model="pw" style="margin-top:30px;">
         <template #prepend>密码</template>
       </el-input>
 
 
       <el-row justify="center">
-        <el-button @click="login" :loading="login_state" class="button">登录</el-button>
+        <el-button  @click="login" :loading="login_state" class="button">登录</el-button>
 
         <el-button  @click="go_register" class="button">注册</el-button>
 
@@ -47,6 +48,8 @@
 
     </el-card>
 
+
+  </div>
 
 
 </template>

@@ -73,7 +73,7 @@
       <!--聊天-->
       <div v-if="now_menu===2">
         <el-card>
-          <el-scrollbar height="300px" id="textBar" >
+          <el-scrollbar height="300px" ref="myScrollbar">
             <div style="margin-bottom: 10px;" v-for="item in this.text_queue">
                 <el-space style="margin-bottom: 5px;">
                   <el-avatar shape="circle" :size="'small'" :src='default_avatar'/>
@@ -440,6 +440,13 @@ export default {
             break;
           case 4:
             my.text_queue=received.data;
+            // if (my.now_menu===2)
+            // {
+            //   setTimeout(function ()
+            //   {
+            //     my.$refs['myScrollbar'].setScrollTop(9999);
+            //   },500);
+            // }
             console.log(my.text_queue);
 
             break;
@@ -489,10 +496,18 @@ export default {
         const posted={type:4,index:2,userText:userText};
         //console.log(posted);
         this.sendJSON(posted);
+
         ElMessage.success("发送成功");
-        document.getElementById('textBar').scrollTop=9999;
         this.clearText();
         this.createCd(this);
+        console.log(this.$refs['myScrollbar'].wrap$.scrollTop,this.$refs['myScrollbar'].wrap$.scrollHeight);
+
+        const my =this;
+        setTimeout(function (){
+          my.$refs['myScrollbar'].wrap$.scrollTop=my.$refs['myScrollbar'].wrap$.scrollHeight;
+        },300);
+        // this.$refs['myScrollbar'].wrap$.scrollTop=this.$refs['myScrollbar'].wrap$.scrollHeight;
+
       }
       else
       {
